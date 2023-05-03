@@ -2,7 +2,7 @@
 
 namespace app\widgets\HistoryList;
 
-use app\models\search\HistorySearch;
+use app\services\interfaces\search\HistorySearchInterface;
 use app\widgets\Export\Export;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
@@ -16,7 +16,8 @@ class HistoryList extends Widget
      */
     public function run()
     {
-        $model = new HistorySearch();
+        $model = Yii::createObject(HistorySearchInterface::class);
+//        $model = new HistorySearch();
 
         return $this->render('main', [
             'model' => $model,
