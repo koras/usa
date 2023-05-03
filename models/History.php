@@ -110,7 +110,7 @@ class History extends ActiveRecord
     /**
      * @return array
      */
-    public static function getEventTexts()
+    private static function getEventTexts()
     {
         return [
             self::EVENT_CREATED_TASK => Yii::t('app', 'Task created'),
@@ -135,7 +135,7 @@ class History extends ActiveRecord
      * @param $event
      * @return mixed
      */
-    public static function getEventTextByEvent($event)
+    private static function getEventTextByEvent($event)
     {
         return static::getEventTexts()[$event] ?? $event;
     }
@@ -153,10 +153,14 @@ class History extends ActiveRecord
      * @param $attribute
      * @return null
      */
-    public function getDetailChangedAttribute($attribute)
+    private function getDetailChangedAttribute($attribute)
     {
         $detail = json_decode($this->detail);
-        return isset($detail->changedAttributes->{$attribute}) ? $detail->changedAttributes->{$attribute} : null;
+        // json_decode m.b. return array
+        if (!is_object($detail) || !property_exists($detail, 'changedAttributes')) {
+            return null;
+        }
+        return $detail->changedAttributes->{$attribute} ?? null;
     }
 
     /**
@@ -166,7 +170,8 @@ class History extends ActiveRecord
     public function getDetailOldValue($attribute)
     {
         $detail = $this->getDetailChangedAttribute($attribute);
-        return isset($detail->old) ? $detail->old : null;
+        // $detail  m.b. not exist
+        return $detail && isset($detail->old) ? $detail->old : null;
     }
 
     /**
@@ -176,7 +181,8 @@ class History extends ActiveRecord
     public function getDetailNewValue($attribute)
     {
         $detail = $this->getDetailChangedAttribute($attribute);
-        return isset($detail->new) ? $detail->new : null;
+        // $detail  m.b. not exist
+        return $detail ? ($detail->new ?? null) : null;
     }
 
     /**
@@ -186,6 +192,6 @@ class History extends ActiveRecord
     public function getDetailData($attribute)
     {
         $detail = json_decode($this->detail);
-        return isset($detail->data->{$attribute}) ? $detail->data->{$attribute} : null;
+        return isset($detail->data) ? ($detail->data->{$attribute} ?? null) : null;
     }
 }
