@@ -1,17 +1,17 @@
 <?php
 
-namespace app\models\search;
+namespace app\services\search;
 
 use app\models\History;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-
+use app\services\interfaces\search\HistorySearchInterface;
 /**
  * HistorySearch represents the model behind the search form about `app\models\History`.
  *
  * @property array $objects
  */
-class HistorySearch extends History
+class HistorySearch extends History implements HistorySearchInterface
 {
     /**
      * @inheritdoc
@@ -37,7 +37,7 @@ class HistorySearch extends History
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search(array $params)
     {
         $query = History::find();
 
@@ -54,7 +54,7 @@ class HistorySearch extends History
             ],
         ]);
 
-        $this->load($params);
+      //  $this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
