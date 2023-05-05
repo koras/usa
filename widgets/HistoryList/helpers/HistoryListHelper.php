@@ -2,8 +2,8 @@
 
 namespace app\widgets\HistoryList\helpers;
 
-use app\models\Call;
-use app\models\Customer;
+use app\models\events\Call;
+use app\models\events\Customer;
 use app\models\History;
 
 class HistoryListHelper

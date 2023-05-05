@@ -2,32 +2,21 @@
 
 namespace app\services\search;
 
-use app\models\History;
-use yii\base\Model;
+use app\models\interfaces\HistoryInterface;
 use yii\data\ActiveDataProvider;
 use app\services\interfaces\search\HistorySearchInterface;
 /**
  * HistorySearch represents the model behind the search form about `app\models\History`.
  *
- * @property array $objects
  */
-class HistorySearch extends History implements HistorySearchInterface
+class HistorySearch implements HistorySearchInterface
 {
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [];
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
+    private $history;
+
+    public function __construct(HistoryInterface $history)
     {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
+        $this->history = $history;
     }
 
     /**
@@ -39,28 +28,10 @@ class HistorySearch extends History implements HistorySearchInterface
      */
     public function search(array $params)
     {
-        $query = History::find();
+        $this->history->load($params);
 
+        $query = $this->history->find();
         // add conditions that should always apply here
-
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
-        $dataProvider->setSort([
-            'defaultOrder' => [
-                'ins_ts' => SORT_DESC,
-                'id' => SORT_DESC
-            ],
-        ]);
-
-      //  $this->load($params);
-
-        if (!$this->validate()) {
-            // uncomment the following line if you do not want to return any records when validation fails
-            $query->where('0=1');
-            return $dataProvider;
-        }
 
         $query->addSelect('history.*');
         $query->with([
@@ -72,6 +43,14 @@ class HistorySearch extends History implements HistorySearchInterface
             'fax',
         ]);
 
-        return $dataProvider;
+        return  new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => [
+                    'ins_ts' => SORT_DESC,
+                    'id' => SORT_DESC
+                ]
+            ]
+        ]);
     }
 }

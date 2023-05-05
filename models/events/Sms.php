@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\events;
 
 use Yii;
 use yii\db\ActiveQuery;

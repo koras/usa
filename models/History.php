@@ -4,9 +4,11 @@ namespace app\models;
 
 use app\models\traits\ObjectNameTrait;
 use Yii;
+use app\models\events\Customer;
+use app\models\events\User;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-
+use app\models\interfaces\HistoryInterface;
 /**
  * This is the model class for table "{{%history}}".
  *
@@ -29,7 +31,7 @@ use yii\db\ActiveRecord;
  * @property Sms $sms
  * @property Call $call
  */
-class History extends ActiveRecord
+class History extends ActiveRecord implements HistoryInterface
 {
     use ObjectNameTrait;
 

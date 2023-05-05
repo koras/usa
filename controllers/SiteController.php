@@ -53,7 +53,6 @@ class SiteController extends Controller
      */
     public function actionExport($exportType)
     {
-      //  $model = new HistorySearch();
 
         return $this->render('export', [
             'dataProvider' => $this->historySearch->search(Yii::$app->request->queryParams),
