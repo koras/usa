@@ -41,7 +41,7 @@ trait ObjectNameTrait
      * @param $className
      * @return mixed
      */
-    public static function getObjectByTableClassName($className)
+    private static function getObjectByTableClassName($className)
     {
         if (method_exists($className, 'tableName')) {
             return str_replace(['{', '}', '%'], '', $className::tableName());
@@ -54,7 +54,7 @@ trait ObjectNameTrait
      * @param $relation
      * @return string|null
      */
-    public static function getClassNameByRelation($relation)
+    private static function getClassNameByRelation($relation)
     {
         foreach (self::$classes as $class) {
             if (self::getObjectByTableClassName($class) == $relation) {
