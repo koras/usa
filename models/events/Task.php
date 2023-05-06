@@ -3,8 +3,7 @@
 namespace app\models\events;
 
 use Yii;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
+use app\models\repositories\Task as TaskActiveRecord;
 
 /**
  * This is the model class for table "{{%task}}".
@@ -33,7 +32,7 @@ use yii\db\ActiveRecord;
  * @property string $isInbox
  * @property string $statusText
  */
-class Task extends ActiveRecord
+class Task extends TaskActiveRecord
 {
     const STATUS_NEW = 0;
     const STATUS_DONE = 1;
@@ -43,63 +42,6 @@ class Task extends ActiveRecord
     const STATE_DONE = 'done';
     const STATE_FUTURE = 'future';
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%task}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['user_id', 'title'], 'required'],
-            [['user_id', 'customer_id', 'status', 'priority'], 'integer'],
-            [['text'], 'string'],
-            [['title', 'object'], 'string', 'max' => 255],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'user_id' => Yii::t('app', 'User'),
-            'customer_id' => Yii::t('app', 'Customer ID'),
-            'status' => Yii::t('app', 'Status'),
-            'title' => Yii::t('app', 'Title'),
-            'text' => Yii::t('app', 'Description'),
-            'due_date' => Yii::t('app', 'Due Date'),
-            'formatted_due_date' => Yii::t('app', 'Due Date'),
-            'priority' => Yii::t('app', 'Priority'),
-            'ins_ts' => Yii::t('app', 'Ins Ts'),
-        ];
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getCustomer()
-    {
-        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
-    }
 
     /**
      * @return array

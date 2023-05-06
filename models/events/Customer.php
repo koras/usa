@@ -4,7 +4,7 @@ namespace app\models\events;
 
 
 use Yii;
-use yii\db\ActiveRecord;
+use app\models\repositories\Customer as CustomerActiveRecord;
 
 
 /**
@@ -13,7 +13,7 @@ use yii\db\ActiveRecord;
  * @property integer $id
  * @property string $name
  */
-class Customer extends ActiveRecord
+class Customer extends CustomerActiveRecord
 {
     const QUALITY_ACTIVE = 'active';
     const QUALITY_REJECTED = 'rejected';
@@ -25,33 +25,6 @@ class Customer extends ActiveRecord
     const TYPE_DEAL = 'deal';
     const TYPE_LOAN = 'loan';
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '{{%customer}}';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['name'], 'string', 'max' => 255],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'name' => Yii::t('app', 'Name'),
-        ];
-    }
 
     /**
      * @return array

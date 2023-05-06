@@ -3,8 +3,7 @@
 namespace app\models\events;
 
 use Yii;
-use yii\db\ActiveQuery;
-use yii\db\ActiveRecord;
+use app\models\repositories\Fax as FaxActiveRecord;
 
 /**
  * This is the model class for table "fax".
@@ -21,7 +20,7 @@ use yii\db\ActiveRecord;
  *
  * @property User $user
  */
-class Fax extends ActiveRecord
+class Fax extends FaxActiveRecord
 {
     const DIRECTION_INCOMING = 0;
     const DIRECTION_OUTGOING = 1;
@@ -29,49 +28,6 @@ class Fax extends ActiveRecord
     const TYPE_POA_ATC = 'poa_atc';
     const TYPE_REVOCATION_NOTICE = 'revocation_notice';
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'fax';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['type'], 'required'],
-            [['ins_ts'], 'safe'],
-            [['user_id'], 'integer'],
-            [['from', 'to'], 'string'],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => Yii::t('app', 'ID'),
-            'ins_ts' => Yii::t('app', 'Created Time'),
-            'user_id' => Yii::t('app', 'User ID'),
-            'from' => Yii::t('app', 'From'),
-            'to' => Yii::t('app', 'To')
-        ];
-    }
-
-    /**
-     * @return ActiveQuery
-     */
-    public function getUser()
-    {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
-    }
 
     /**
      * @return array
