@@ -9,6 +9,7 @@ use yii\helpers\Html;
 
 /** @var $model HistorySearch */
 
+// узкое место где необходима абстрактная фабрика
 switch ($model->event) {
     case History::EVENT_CREATED_TASK:
     case History::EVENT_COMPLETED_TASK:
