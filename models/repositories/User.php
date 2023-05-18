@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\repositories;
 
 use Yii;
 use yii\db\ActiveRecord;
@@ -64,25 +64,5 @@ class User extends ActiveRecord
             'username' => Yii::t('app', 'Username (login)'),
             'statusText' => Yii::t('app', 'Status'),
         ];
-    }
-
-    /**
-     * @return array
-     */
-    public static function getStatusTexts()
-    {
-        return [
-            self::STATUS_ACTIVE => Yii::t('app', 'Active'),
-            self::STATUS_DELETED => Yii::t('app', 'Deleted'),
-            self::STATUS_HIDDEN => Yii::t('app', 'Hidden'),
-        ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatusText()
-    {
-        return self::getStatusTexts()[$this->status] ?? $this->status;
     }
 }

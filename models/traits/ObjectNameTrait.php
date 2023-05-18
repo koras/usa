@@ -2,12 +2,12 @@
 
 namespace app\models\traits;
 
-use app\models\Call;
-use app\models\Customer;
-use app\models\Fax;
-use app\models\Sms;
-use app\models\Task;
-use app\models\User;
+use app\models\events\Call;
+use app\models\events\Customer;
+use app\models\events\Fax;
+use app\models\events\Sms;
+use app\models\events\Task;
+use app\models\events\User;
 
 trait ObjectNameTrait
 {
@@ -41,7 +41,7 @@ trait ObjectNameTrait
      * @param $className
      * @return mixed
      */
-    public static function getObjectByTableClassName($className)
+    private static function getObjectByTableClassName($className)
     {
         if (method_exists($className, 'tableName')) {
             return str_replace(['{', '}', '%'], '', $className::tableName());
@@ -54,7 +54,7 @@ trait ObjectNameTrait
      * @param $relation
      * @return string|null
      */
-    public static function getClassNameByRelation($relation)
+    private static function getClassNameByRelation($relation)
     {
         foreach (self::$classes as $class) {
             if (self::getObjectByTableClassName($class) == $relation) {

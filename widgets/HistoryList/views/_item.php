@@ -1,14 +1,15 @@
 <?php
-use app\models\Call;
-use app\models\Customer;
+use app\models\events\Call;
+use app\models\events\Customer;
 use app\models\History;
 use app\models\search\HistorySearch;
-use app\models\Sms;
+use app\models\events\Sms;
 use app\widgets\HistoryList\helpers\HistoryListHelper;
 use yii\helpers\Html;
 
 /** @var $model HistorySearch */
 
+// узкое место где необходима абстрактная фабрика
 switch ($model->event) {
     case History::EVENT_CREATED_TASK:
     case History::EVENT_COMPLETED_TASK:

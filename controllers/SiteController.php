@@ -2,12 +2,27 @@
 
 namespace app\controllers;
 
-use app\models\search\HistorySearch;
+use app\services\interfaces\search\HistorySearchInterface;
 use Yii;
 use yii\web\Controller;
 
 class SiteController extends Controller
 {
+
+    /**
+     * @var HistorySearchInterface - business logic
+     */
+    private $historySearch;
+
+    public function __construct(
+        $id,
+        $module,
+        HistorySearchInterface $historySearch,
+        $config = []
+    ) {
+        $this->historySearch = $historySearch;
+        parent::__construct($id, $module, $config);
+    }
 
     /**
      * {@inheritdoc}
@@ -38,12 +53,11 @@ class SiteController extends Controller
      */
     public function actionExport($exportType)
     {
-        $model = new HistorySearch();
 
         return $this->render('export', [
-            'dataProvider' => $model->search(Yii::$app->request->queryParams),
+            'dataProvider' => $this->historySearch->search(Yii::$app->request->queryParams),
             'exportType' => $exportType,
-            'model' => $model
+            'model' => $this->historySearch
         ]);
     }
 }
